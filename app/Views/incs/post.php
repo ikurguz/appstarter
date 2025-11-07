@@ -4,5 +4,6 @@
     <h5 class="card-title"><?= $post['title'] ?></h5>
     <p class="card-text"> <?= $post['excerpt'] ?></p>
     <a href="<?= base_url("/blog/{$post['id']}")?>" class="btn btn-primary">Подробнее</a>
+    <a href="<?= route_to('blog_edit', $post['id'])?>" class="btn btn-link">Изменить</a>
   </div>
 </div>

@@ -64,4 +64,35 @@ class Blog extends BaseController
         return redirect('blog_create');
     }
 
+    public function edit($id) {
+        
+        $blogModel = $this->blogModel;
+        $post = $blogModel->find($id);
+
+        if (!$post) {
+            // выводит страницу 404
+            throw PageNotFoundException::forPageNotFound();
+        }
+
+        $data = [
+            'title' => "Редактировать запись id {$post['id']}",
+            'post' => esc($post),
+        ];
+        return view('blog/edit', $data);
+    }
+
+    public function update($id) {
+        $post = $this->blogModel->find($id);
+        if (!$post) {
+            // выводит страницу 404
+            throw PageNotFoundException::forPageNotFound();
+        }
+        $data = $this->request->getPost();
+        $result = $this->blogModel->update($id, $data);
+        if ($result) {
+            $data = ['status' => 'success'];
+        }
+        return redirect()->route('blog_edit', [$id]);
+    }
+
 }
