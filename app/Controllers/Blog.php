@@ -76,7 +76,7 @@ class Blog extends BaseController
 
         $data = [
             'title' => "Редактировать запись id {$post['id']}",
-            'post' => esc($post),
+            'post' => $post,
         ];
         return view('blog/edit', $data);
     }
@@ -93,6 +93,18 @@ class Blog extends BaseController
             $data = ['status' => 'success'];
         }
         return redirect()->route('blog_edit', [$id]);
+    }
+
+    public function delete($id) {
+        $post = $this->blogModel->find($id);
+        if (!$post) {
+            // выводит страницу 404
+            throw PageNotFoundException::forPageNotFound();
+        }
+
+        $this->blogModel->delete($id);
+
+        return redirect()->route('blog_index');
     }
 
 }

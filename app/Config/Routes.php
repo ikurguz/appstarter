@@ -13,5 +13,7 @@ $routes->post('blog/store', 'Blog::store');
 $routes->get('blog/edit/(:num)', 'Blog::edit/$1', ['as' => 'blog_edit']);
 $routes->post('blog/update/(:num)', 'Blog::update/$1', ['as' => 'blog_update']);
 
-$routes->get('blog', 'Blog::index');
+$routes->get('blog/delete/(:num)', 'Blog::delete/$1', ['as' => 'blog_delete']);
+
+$routes->get('blog', 'Blog::index', ['as' => 'blog_index']);
 $routes->get('blog/(:num)', 'Blog::view/$1');
