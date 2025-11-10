@@ -12,6 +12,8 @@ $routes->get('/', 'Main::index');
 //к форме можно будет обратиться методом get и post
 $routes->match(['get', 'post'], 'test', 'Main::test', ['as' => 'main.test']);
 
+$routes->match(['get', 'post'], 'test2', 'Main::test2', ['as' => 'main.test2']);
+
 $routes->get('blog/create', 'Blog::create', ['as' => 'blog_create']);
 $routes->post('blog/store', 'Blog::store');
 

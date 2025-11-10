@@ -4,6 +4,7 @@
 namespace App\Controllers;
 
 use App\Models\CountryModel;
+use App\Models\TestModel;
 use Config\Database;
 
 
@@ -66,5 +67,29 @@ class Main extends BaseController
 
 
         return view('main/test', $data);
+    }
+
+
+    public function test2()
+    {
+        helper('form');
+
+
+        $data = [
+            'title' => 'Test form 2',
+            'page_title' => 'Test form 2',
+        ];
+
+
+        if ($this->request->getMethod() == 'POST') {
+            $testModel = new TestModel();
+            if (!$testModel->insert($this->request->getPost())) {
+                return redirect()->route('main.test2')->withInput()->with('errors', $testModel->errors());
+            } else {
+                return redirect()->route('main.test2')->with('success', 'Форма успешно отправлена!');
+            }
+        }
+
+        return view('main/test2', $data);
     }
 }
