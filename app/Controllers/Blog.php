@@ -13,7 +13,8 @@ class Blog extends BaseController
     public $blogModel;
 
     // конструктор класса чтобы каждый раз не создавать объект
-    public function __construct() {
+    public function __construct()
+    {
         $this->blogModel = new BlogModel();
     }
 
@@ -30,7 +31,7 @@ class Blog extends BaseController
 
     public function view($id)
     {
-        
+
         $blogModel = $this->blogModel;
         $post = $blogModel->find($id);
 
@@ -47,7 +48,8 @@ class Blog extends BaseController
         return view('blog/view', $data);
     }
 
-    public function create() {
+    public function create()
+    {
         $data = [
             'title' => 'Создать статью'
         ];
@@ -55,17 +57,19 @@ class Blog extends BaseController
         return view('blog/create', $data);
     }
 
-    public function store() {
+    public function store()
+    {
         // $data = $this->request->getPost();
         // print_r($data);
         $data = $this->request->getPost();
         $blogModel = $this->blogModel;
-        $blogModel ->insert($data);
+        $blogModel->insert($data);
         return redirect('blog_create');
     }
 
-    public function edit($id) {
-        
+    public function edit($id)
+    {
+
         $blogModel = $this->blogModel;
         $post = $blogModel->find($id);
 
@@ -81,7 +85,8 @@ class Blog extends BaseController
         return view('blog/edit', $data);
     }
 
-    public function update($id) {
+    public function update($id)
+    {
         $post = $this->blogModel->find($id);
         if (!$post) {
             // выводит страницу 404
@@ -89,13 +94,11 @@ class Blog extends BaseController
         }
         $data = $this->request->getPost();
         $result = $this->blogModel->update($id, $data);
-        if ($result) {
-            $data = ['status' => 'success'];
-        }
         return redirect()->route('blog_edit', [$id]);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $post = $this->blogModel->find($id);
         if (!$post) {
             // выводит страницу 404
