@@ -2,8 +2,6 @@
 
 <?= $this->section('content') ?>
 
-<?= helper('form'); ?>
-
 <div class="container">
     <div class="row">
         <div class="col-12">

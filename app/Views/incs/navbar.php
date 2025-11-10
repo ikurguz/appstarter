@@ -15,6 +15,9 @@
                 <li class="nav-item">
                     <a class="nav-link <?= ( base_url('blog/create') === rtrim(current_url(), '/') ? 'active' : '' ) ?>" href="/blog/create">Добавить запись</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= ( base_url('test') === rtrim(current_url(), '/') ? 'active' : '' ) ?>" href="/test">Test form</a>
+                </li>
             </ul>
         </div>
     </div>

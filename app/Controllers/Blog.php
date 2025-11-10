@@ -69,7 +69,7 @@ class Blog extends BaseController
 
     public function edit($id)
     {
-
+        helper('form');
         $blogModel = $this->blogModel;
         $post = $blogModel->find($id);
 
