@@ -12,6 +12,11 @@ $routes->get('/', 'Main::index');
 //к форме можно будет обратиться методом get и post
 $routes->match(['get', 'post'], 'test', 'Main::test', ['as' => 'main.test']);
 
+// Уроки по валидации файлов
+$routes->match(['get', 'post'], 'file-upload', 'Main::fileUpload', ['as' => 'main.file_upload']);
+$routes->match(['get', 'post'], 'file-upload2', 'Main::fileUpload2', ['as' => 'main.file_upload2']);
+$routes->match(['get', 'post'], 'file-upload3', 'Main::fileUpload3', ['as' => 'main.file_upload3']);
+
 $routes->match(['get', 'post'], 'test2', 'Main::test2', ['as' => 'main.test2']);
 
 $routes->get('blog/create', 'Blog::create', ['as' => 'blog_create']);

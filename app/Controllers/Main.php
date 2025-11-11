@@ -16,7 +16,7 @@ class Main extends BaseController
     {
         // $this->db = \Config\Database::connect();
         // $this->db = db_connect('tests');
-       $this->db = new CountryModel();
+        $this->db = new CountryModel();
     }
 
     public function index()
@@ -43,6 +43,7 @@ class Main extends BaseController
 
         return view('main/index', $data);
     }
+
     public function test()
     {
         helper('form');
@@ -63,7 +64,6 @@ class Main extends BaseController
                 return redirect()->route('main.test')->with('success', 'Форма успешно отправлена!');
             }
         }
-
 
 
         return view('main/test', $data);
@@ -91,5 +91,120 @@ class Main extends BaseController
         }
 
         return view('main/test2', $data);
+    }
+
+    public function fileUpload()
+    {
+        helper('form');
+
+        $data = [
+            'title' => 'File Upload [title]',
+            'page_title' => 'File Upload!',
+        ];
+
+
+        if ($this->request->getMethod() == 'POST') {
+            $file = $this->request->getFile('userfile');
+//            Если файл загружен и находится на сервере (во временной папке)
+            if ($file->isValid() && !$file->hasMoved()) {
+//                сохранит в папку writable/uploads
+//                $f = $file->store('test', '100.jpg');
+//                Так запись корректней
+                $f = date('d_m_y');
+//                Путь куда сохранить и его имя, называем его рандомным именем
+                if ($file->move("uploads/{$f}", $n = $file->getRandomName())) {
+                    session()->setFlashdata('file', "{$f}/{$n}");
+                    return redirect()->route('main.file_upload')->with('success', 'SUCCESS!');
+
+                } else {
+                    return redirect()->route('main.file_upload')->with('errors', 'Error moved file!');
+                }
+
+
+            }
+//            d($file->getName());
+//            d($file->getTempName());
+//            d($file->getClientName());
+//            d($file->getClientExtension());
+//            d($file->guessExtension());
+        }
+
+        return view('main/file_upload', $data);
+    }
+
+    public function fileUpload2()
+    {
+        helper('form');
+
+        $rules = [
+            'name' => 'required|min_length[3]|max_length[20]',
+            'email' => 'valid_email',
+            'userfile' => 'uploaded[userfile]'
+        ];
+
+        $data = [
+            'title' => 'File Upload [title]',
+            'page_title' => 'File Upload!',
+        ];
+
+        if ($this->request->getMethod() == 'POST') {
+            $file = $this->request->getFile('userfile');
+
+            if ($this->validate($rules)) {
+                if ($file->isValid() && !$file->hasMoved()) {
+                    $f = date('d_m_y');
+//                  Путь куда сохранить и его имя, называем его рандомным именем
+                    if ($file->move("uploads/{$f}", $n = $file->getRandomName())) {
+                        session()->setFlashdata('file', "{$f}/{$n}");
+                    } else {
+                        return redirect()->route('main.file_upload2')->with('errors', ['Error moved file!']);
+                    }
+                }
+            } else {
+                return redirect()->route('main.file_upload2')->withInput()->with('errors', $this->validator->getErrors());
+            }
+            return redirect()->route('main.file_upload2')->with('success', 'SUCCESS!');
+        }
+
+        return view('main/file_upload2', $data);
+    }
+
+    public function fileUpload3()
+    {
+        helper('form');
+
+        $rules = [
+            'name' => 'required|min_length[3]|max_length[20]',
+            'email' => 'valid_email',
+            'userfile' => 'uploaded[userfile.0]'
+        ];
+
+        $data = [
+            'title' => 'File Upload [title]',
+            'page_title' => 'File Upload 3!',
+        ];
+
+        if ($this->request->getMethod() == 'POST') {
+            $file = $this->request->getFileMultiple('userfile');
+
+            d($file);
+
+//            if ($this->validate($rules)) {
+//                if ($file->isValid() && !$file->hasMoved()) {
+//                    $f = date('d_m_y');
+////                  Путь куда сохранить и его имя, называем его рандомным именем
+//                    if ($file->move("uploads/{$f}", $n = $file->getRandomName())) {
+//                        session()->setFlashdata('file', "{$f}/{$n}");
+//                    } else {
+//                        return redirect()->route('main.file_upload3')->with('errors', ['Error moved file!']);
+//                    }
+//                }
+//            } else {
+//                return redirect()->route('main.file_upload3')->withInput()->with('errors', $this->validator->getErrors());
+//            }
+//            return redirect()->route('main.file_upload3')->with('success', 'SUCCESS!');
+        }
+
+        return view('main/file_upload3', $data);
     }
 }

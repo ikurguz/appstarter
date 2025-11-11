@@ -18,6 +18,9 @@
                 <li class="nav-item">
                     <a class="nav-link <?= ( base_url('test') === rtrim(current_url(), '/') ? 'active' : '' ) ?>" href="/test">Test form</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= ( base_url('file-upload') === rtrim(current_url(), '/') ? 'active' : '' ) ?>" href="/file-upload">File upload</a>
+                </li>
             </ul>
         </div>
     </div>
