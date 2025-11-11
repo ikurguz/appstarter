@@ -36,6 +36,53 @@ class Main extends BaseController
 //
 //        d($result);
 
+
+        $session = session();
+//        $newdata = [
+//            'email' => 'test@test.com',
+//            'username' => 'test',
+//            'logged_in' => TRUE,
+//        ];
+//        $session->set($newdata);
+
+//        $session->push('user_group', ['title' => 'admin']);
+
+        // Очистить сессию
+        // $session->destroy();
+
+        $cart = [
+            [
+                'title' => 'Product 1',
+                'price' => 100,
+                'qty' => 2
+            ],
+            [
+                'title' => 'Product 2',
+                'price' => 200,
+                'qty' => 3
+            ],
+            [
+                'title' => 'Product 3',
+                'price' => 300,
+                'qty' => 4
+            ]
+        ];
+
+//        $session->set('cart', $cart);
+//        Таким способом можно добавить значения в сессию
+//        $session->push('cart', [
+//            [
+//                'title' => 'Product 4',
+//                'price' => 400,
+//                'qty' => 10
+//            ]
+//        ]);
+        $s_cart = session('cart');
+        unset($s_cart[0]);
+        session()->set('cart', $s_cart);
+        d($session->get('cart'));
+
+
         $data = [
             'title' => 'Главная страница',
             'page_title' => 'Добро пожаловать!',
@@ -190,7 +237,7 @@ class Main extends BaseController
             if ($this->validate($rules)) {
                 if ($file->isValid() && !$file->hasMoved()) {
                     $f = date('d_m_y');
-////                  Путь куда сохранить и его имя, называем его рандомным именем
+                    // Путь куда сохранить и его имя, называем его рандомным именем
                     if ($file->move("uploads/{$f}", $n = $file->getRandomName())) {
 
                         if (!is_dir("uploads/thumbs/{$f}")) {
@@ -201,7 +248,7 @@ class Main extends BaseController
 //                      Все работы с изображением начинаются с метода widthFile()
                         $image->withFile("uploads/{$f}/{$n}")
 //                            Обрезаем изображение и ресайзим до нужных размеров
-                            ->fit(287,215, 'center')
+                            ->fit(287, 215, 'center')
                             ->save("uploads/thumbs/{$f}/{$n}");
 
                         session()->setFlashdata('file', "thumbs/{$f}/{$n}");
