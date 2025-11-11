@@ -80,7 +80,7 @@ class Main extends BaseController
         $s_cart = session('cart');
         unset($s_cart[0]);
         session()->set('cart', $s_cart);
-        d($session->get('cart'));
+//        d($session->get('cart'));
 
 
         $data = [

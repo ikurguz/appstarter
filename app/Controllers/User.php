@@ -13,6 +13,9 @@ class User extends BaseController
 
     public function register()
     {
+        if (session()->has('name')) {
+            return redirect('admin.main');
+        }
         helper('form');
 
         $data = [
@@ -23,7 +26,9 @@ class User extends BaseController
 
     public function store()
     {
-
+        if (session()->has('name')) {
+            return redirect('admin.main');
+        }
         if ($this->validate('userRegister')) {
             if (!$this->userModel->insert($this->request->getPost())) {
                 return redirect()->route('user.register')->withInput()->with('fail', 'Чет пошло не так');
@@ -40,6 +45,9 @@ class User extends BaseController
 
     public function auth()
     {
+        if (session()->has('name')) {
+            return redirect('admin.main');
+        }
         helper('form');
 
         if ($this->request->getMethod() == 'POST') {
@@ -58,7 +66,7 @@ class User extends BaseController
 
 //    4 - если прошли валидацию
                 $this->setProfile($user);
-                return redirect()->route('user.auth')->with('success', 'Ура, вы успешно вошли в личный кабинет');
+                return redirect()->route('admin.main')->with('success', 'Ура, вы успешно вошли в личный кабинет');
             }
         }
 
@@ -81,12 +89,12 @@ class User extends BaseController
             'email' => $user['email'],
         ];
 
-        session()->set('user', $user_data);
+        session()->set($user_data);
     }
 
     public function logout()
     {
-        if (session('user.name')) {
+        if (session()->has('name')) {
             session()->destroy();
         }
         return redirect()->route('user.auth');

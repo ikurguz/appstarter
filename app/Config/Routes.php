@@ -7,6 +7,11 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Main::index');
 
+$routes->group('admin', ['filter' => 'checkauth'], function ($routes) {
+    $routes->get('/', 'Admin\Main::index', ['as' => 'admin.main']);
+    $routes->get('test', 'Admin\Main::test', ['as' => 'admin.main.test']);
+});
+
 // в данном примере используется метод match который
 // позволяет сделать и вид и обработчик на одной странице
 //к форме можно будет обратиться методом get и post
