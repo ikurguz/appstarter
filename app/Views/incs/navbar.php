@@ -22,6 +22,10 @@
                     <a class="nav-link <?= ( base_url('file-upload') === rtrim(current_url(), '/') ? 'active' : '' ) ?>" href="/file-upload">File upload</a>
                 </li>
             </ul>
+            <div class="d-flex">
+                <span class="text-light">Привет, <?= session()->get('user.name') ? esc(session()->get('user.name')) . '| <a href=" '. route_to('user.logout') . '"> Выйти</a>' : 'гость' ?> </span>
+
+            </div>
         </div>
     </div>
 </nav>

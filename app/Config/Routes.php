@@ -19,6 +19,8 @@ $routes->match(['get', 'post'], 'file-upload3', 'Main::fileUpload3', ['as' => 'm
 
 $routes->get('user/register', 'User::register', ['as' => 'user.register']);
 $routes->post('user/store', 'User::store', ['as' => 'user.store']);
+$routes->match(['get', 'post'], 'user/auth', 'User::auth', ['as' => 'user.auth']);
+$routes->get('user/logout', 'User::logout', ['as' => 'user.logout']);
 
 $routes->match(['get', 'post'], 'test2', 'Main::test2', ['as' => 'main.test2']);
 
