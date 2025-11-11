@@ -17,6 +17,9 @@ $routes->match(['get', 'post'], 'file-upload', 'Main::fileUpload', ['as' => 'mai
 $routes->match(['get', 'post'], 'file-upload2', 'Main::fileUpload2', ['as' => 'main.file_upload2']);
 $routes->match(['get', 'post'], 'file-upload3', 'Main::fileUpload3', ['as' => 'main.file_upload3']);
 
+$routes->get('user/register', 'User::register', ['as' => 'user.register']);
+$routes->post('user/store', 'User::store', ['as' => 'user.store']);
+
 $routes->match(['get', 'post'], 'test2', 'Main::test2', ['as' => 'main.test2']);
 
 $routes->get('blog/create', 'Blog::create', ['as' => 'blog_create']);
