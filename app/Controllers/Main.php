@@ -174,9 +174,7 @@ class Main extends BaseController
         helper('form');
 
         $rules = [
-            'name' => 'required|min_length[3]|max_length[20]',
-            'email' => 'valid_email',
-            'userfile' => 'uploaded[userfile.0]'
+            'userfile' => 'uploaded[userfile]|is_image[userfile]'
         ];
 
         $data = [
@@ -185,24 +183,36 @@ class Main extends BaseController
         ];
 
         if ($this->request->getMethod() == 'POST') {
-            $file = $this->request->getFileMultiple('userfile');
+            $file = $this->request->getFile('userfile');
 
-            d($file);
+//            d($file);
 
-//            if ($this->validate($rules)) {
-//                if ($file->isValid() && !$file->hasMoved()) {
-//                    $f = date('d_m_y');
+            if ($this->validate($rules)) {
+                if ($file->isValid() && !$file->hasMoved()) {
+                    $f = date('d_m_y');
 ////                  Путь куда сохранить и его имя, называем его рандомным именем
-//                    if ($file->move("uploads/{$f}", $n = $file->getRandomName())) {
-//                        session()->setFlashdata('file', "{$f}/{$n}");
-//                    } else {
-//                        return redirect()->route('main.file_upload3')->with('errors', ['Error moved file!']);
-//                    }
-//                }
-//            } else {
-//                return redirect()->route('main.file_upload3')->withInput()->with('errors', $this->validator->getErrors());
-//            }
-//            return redirect()->route('main.file_upload3')->with('success', 'SUCCESS!');
+                    if ($file->move("uploads/{$f}", $n = $file->getRandomName())) {
+
+                        if (!is_dir("uploads/thumbs/{$f}")) {
+                            mkdir("uploads/thumbs/{$f}", 0755);
+                        }
+
+                        $image = \Config\Services::image();
+//                      Все работы с изображением начинаются с метода widthFile()
+                        $image->withFile("uploads/{$f}/{$n}")
+//                            Обрезаем изображение и ресайзим до нужных размеров
+                            ->fit(287,215, 'center')
+                            ->save("uploads/thumbs/{$f}/{$n}");
+
+                        session()->setFlashdata('file', "thumbs/{$f}/{$n}");
+                    } else {
+                        return redirect()->route('main.file_upload3')->with('errors', ['Error moved file!']);
+                    }
+                }
+            } else {
+                return redirect()->route('main.file_upload3')->withInput()->with('errors', $this->validator->getErrors());
+            }
+            return redirect()->route('main.file_upload3')->with('success', 'SUCCESS!');
         }
 
         return view('main/file_upload3', $data);
